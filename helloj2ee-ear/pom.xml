@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>helloj2ee</artifactId>
+    <groupId>cc.magickiat.j2ee</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>cc.magickiat.j2ee</groupId>
+  <artifactId>helloj2ee-ear</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>ear</packaging>
+
+  <name>helloj2ee-ear</name>
+
+  <properties>
+    <helloj2ee.ejb.version>1.0-SNAPSHOT</helloj2ee.ejb.version>
+    <wildfly.username>admin</wildfly.username>
+    <wildfly.password>admin123</wildfly.password>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>jboss</groupId>
+      <artifactId>jboss-j2ee</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- WARs and EJB-JARs -->
+    <dependency>
+      <groupId>${project.parent.groupId}</groupId>
+      <artifactId>${project.parent.artifactId}-ejb</artifactId>
+      <version>${project.version}</version>
+      <type>ejb</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.parent.groupId}</groupId>
+      <artifactId>${project.parent.artifactId}-ejb</artifactId>
+      <version>${project.version}</version>
+      <type>ejb-client</type>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>${project.parent.groupId}</groupId>
+      <artifactId>${project.parent.artifactId}-war</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-ear-plugin</artifactId>
+
+        <configuration>
+          <version>1.4</version>
+          <fileNameMapping>no-version</fileNameMapping>
+          <defaultLibBundleDir>lib</defaultLibBundleDir>
+
+          <modules>
+            <ejbModule>
+              <groupId>${project.parent.groupId}</groupId>
+              <artifactId>${project.parent.artifactId}-ejb</artifactId>
+              <bundleFileName>${project.parent.artifactId}-ejb.jar</bundleFileName>
+            </ejbModule>
+            <webModule>
+              <groupId>${project.parent.groupId}</groupId>
+              <artifactId>${project.parent.artifactId}-war</artifactId>
+              <contextRoot>/helloj2ee</contextRoot>
+            </webModule>
+          </modules>
+
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

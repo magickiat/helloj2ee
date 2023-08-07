@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>helloj2ee</artifactId>
+    <groupId>cc.magickiat.j2ee</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <groupId>cc.magickiat.j2ee</groupId>
+  <artifactId>helloj2ee-war</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+
+  <name>helloj2ee-war</name>
+
+  <dependencies>
+    <!-- https://developer.jboss.org/thread/34678 -->
+    <dependency>
+      <groupId>cc.magickiat.j2ee</groupId>
+      <artifactId>helloj2ee-ejb</artifactId>
+      <type>ejb-client</type>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>jboss</groupId>
+      <artifactId>jboss-j2ee</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.4</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>2.1</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>xdoclet</groupId>
+      <artifactId>xdoclet</artifactId>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>xdoclet-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>xdoclet</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <webdoclet destDir="${project.build.outputDirectory}" excludedtags="@version,@author,@todo,@Override" force="false" verbose="true">
+                  <fileset dir="${project.build.sourceDirectory}">
+                    <include name="**/*Servlet.java"/>
+                  </fileset>
+                  <deploymentdescriptor validateXML="true" servletspec="2.3" destDir="src/main/webapp/WEB-INF"/>
+                  <jbosswebxml validateXML="true" destDir="src/main/webapp/WEB-INF" />
+                </webdoclet>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
